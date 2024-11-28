@@ -9,22 +9,22 @@
   <script src="visualization.js"></script>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       height: 100vh;
       background-color: #f4f4f4;
     }
     canvas {
-      display: block;
       border: 1px solid #ccc;
       background-color: #fff;
+    }
+    button {
+      margin: 10px 10px 10px 0px;
     }
   </style>
 </head>
 <body>
+  <button onClick="handleStart()">Start!</button>
+  <button onClick="handleToggleMode()">Toggle mode</button>    
+  <button onClick="handleToggleIO()">Toggle show IO</button>    
   <script>console.log('sup, you seein\' this, bro?')</script>
 </body>
 </html>

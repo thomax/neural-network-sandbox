@@ -1,6 +1,7 @@
 class NeuralNetwork {
   // neuronsByLayer is typically [2, 3, 1]
-  constructor(neuronsByLayer) {
+  constructor(options) {
+    const { neuronsByLayer, zeroBias } = options
     console.log('Creating neural network with layers:', neuronsByLayer)
     this.layers = new Array(neuronsByLayer.length)
 
@@ -23,7 +24,7 @@ class NeuralNetwork {
           {
             name: `L${layerIndex}-N${i}`,
             numberOfIncomingSignals: layerIndex === 0 ? 1 : neuronsByLayer[layerIndex - 1],
-            bias: Math.random()
+            bias: zeroBias ? 0 : Math.random()
           }
         )
         layer.addNeuron(neuron)
@@ -53,7 +54,8 @@ class NeuralNetwork {
   }
 
   getResults() {
-    return this.layers[this.layers.length - 1].neurons.map(neuron => neuron.activation())
+    console.log('Getting results', this.layers[this.layers.length - 1].neurons)
+    return this.layers[this.layers.length - 1].neurons.map(neuron => neuron.activation({ usePreviousRun: true }))
   }
 }
 
@@ -77,6 +79,7 @@ class Neuron {
     this.bias = data.bias || 0
     this.signalPaths = []
     this.inputs = []
+    this.previousInputs = []
   }
 
   addSignalPath(signalPath) {
@@ -85,27 +88,31 @@ class Neuron {
 
   receiveInput(input) {
     this.inputs.push(input)
-    console.log(`${this.name} got ${input}`)
     if (this.inputs.length === this.numberOfIncomingSignals) {
+      // final input received, now send signal
       this.send()
     }
   }
 
-  activation() {
+  activation(options = { usePreviousRun: false }) {
+    const { usePreviousRun } = options
     let x = 0
-    this.inputs.forEach(input => {
+    const arr = usePreviousRun ? this.previousInputs : this.inputs
+    arr.forEach(input => {
       x += input
     })
     x += this.bias
-    return Math.max(0, x)
+    const result = Math.max(0, x)
+    console.log('Neuron', this.name, 'received inputs', this.inputs, 'activation', result)
+    return result
   }
 
   send() {
     this.signalPaths.forEach(signalPath => {
       const output = this.activation()
-      console.log(`${this.name} sent ${output}`)
       signalPath.relayOutput(output)
     })
+    this.previousInputs = [...this.inputs]
     this.inputs = []
   }
 }
