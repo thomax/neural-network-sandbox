@@ -103,7 +103,6 @@ class Neuron {
     })
     x += this.bias
     const result = Math.max(0, x)
-    console.log('Neuron', this.name, 'received inputs', this.inputs, 'activation', result)
     return result
   }
 

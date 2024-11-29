@@ -72,6 +72,7 @@ function drawNetwork(network) {
     fill(200, 200, 200, 100)
     rectMode(CENTER)
     rect((i + 1) * layerSpacing, height / 2, 100, height - 20, 10)
+
     // Layer name
     fill(0)
     textAlign(CENTER, CENTER)
