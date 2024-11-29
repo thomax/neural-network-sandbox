@@ -53,14 +53,6 @@ function handleToggleIO() {
   drawNetwork(nn)
 }
 
-function getActivationValue(neuron, layer) {
-  return neuron.activation({ usePreviousRun: true }).toFixed(2)
-  // if (layer.isOutputLayer) {
-  //   return nn.getResults().reduce((acc, val) => acc + val, 0).toFixed(2)
-  // }
-  // return neuron.previousActivation.toFixed(2)
-}
-
 function drawNetwork(network) {
   const layerSpacing = width / (network.layers.length + 1) // Horizontal space between layers
 
@@ -77,7 +69,6 @@ function drawNetwork(network) {
     fill(0)
     textAlign(CENTER, CENTER)
     text(`Layer ${i + 0}`, (i + 1) * layerSpacing, 20)
-
 
     const neuronSpacing = height / (layer.neurons.length + 1) // Vertical space between neurons in a layer
 
@@ -97,7 +88,7 @@ function drawNetwork(network) {
       // Neuron name and bias
       fill(0)
       textAlign(CENTER, CENTER)
-      text(neuronName + (showIO ? `\n${getActivationValue(neuron, layer)}` : ''), x, y)
+      text(neuronName + (showIO ? `\n${neuron.activation({ usePreviousRun: true }).toFixed(2)}` : ''), x, y)
 
       // Draw connections to the next layer
       if (!layer.isOutputLayer) {
