@@ -33,7 +33,8 @@ class NeuralNetwork {
         if (!layer.isOutputLayer) {
           const nextLayer = this.layers[layerIndex + 1]
           nextLayer.neurons.forEach(nextNeuron => {
-            const signalPath = new SignalPath({ weight: Math.random(), nextNeuron })
+            const spOptions = { weight: Math.random(), nextNeuron }
+            const signalPath = new SignalPath(spOptions)
             neuron.addSignalPath(signalPath)
           })
         }
@@ -102,7 +103,7 @@ class Neuron {
       x += input
     })
     x += this.bias
-    const result = Math.max(0, x)
+    const result = Math.max(0, x) // ReLU
     return result
   }
 

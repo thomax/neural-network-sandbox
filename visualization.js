@@ -2,17 +2,18 @@ let advancedMode = true
 let showIO = true
 const neuronRadius = 40
 let nn
-const neuronNames = ['Juge Jonas', 'Milde Mille', 'Random Rick', 'Crazy Carl', 'Silly Sally', 'Boring Bob', 'Lazy Larry', 'Happy Harry']
+const neuronNames = ['Juge Jonas', 'Milde Mille', 'Random Rick', 'Fornuftig Fie']
 
-const networkInput = [0.3, 0.8, 0.4]
+const neuronsByLayer = [3, 4, 1] // number of neurons in each layer
+const networkInput = [-0.8, 0.2, 0.3] // input values for each neuron in the first layer
+
 const networkOptions = {
-  neuronsByLayer: [3, 1],
+  neuronsByLayer,
   zeroBias: true
 }
 
-
 function setup() {
-  createCanvas(800, 600)
+  createCanvas(900, 600)
   nn = new NeuralNetwork(networkOptions)
 }
 
@@ -60,15 +61,15 @@ function drawNetwork(network) {
     const layer = network.layers[i]
 
     // Layer background rectangle based on number of layers
-    noStroke()
-    fill(200, 200, 200, 100)
-    rectMode(CENTER)
-    rect((i + 1) * layerSpacing, height / 2, 100, height - 20, 10)
+    // noStroke()
+    // fill(200, 200, 200, 100)
+    // rectMode(CENTER)
+    // rect((i + 1) * layerSpacing, height / 2, 100, height - 20, 10)
 
-    // Layer name
-    fill(0)
-    textAlign(CENTER, CENTER)
-    text(`Layer ${i + 0}`, (i + 1) * layerSpacing, 20)
+    // // Layer name
+    // fill(0)
+    // textAlign(CENTER, CENTER)
+    // text(`Layer ${i + 0}`, (i + 1) * layerSpacing, 20)
 
     const neuronSpacing = height / (layer.neurons.length + 1) // Vertical space between neurons in a layer
 
@@ -121,7 +122,7 @@ function drawNetwork(network) {
         })
       }
 
-      if (showIO) {
+      if (showIO && !layer.isInputLayer) {
         neuron.previousInputs.forEach((input, index) => {
           const yOffset = (index - 1) * neuronRadius / 2
           // Semi-transparent background for the input label
